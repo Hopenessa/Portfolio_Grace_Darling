@@ -16,7 +16,7 @@ const Section = styled.section`
   }
   h1 {
     font-family: "Tinos", serif;
-    font-size: clamp(68px, 8.5vw, 126px);
+    font-size: clamp(32px, 5vw, 72px);
     letter-spacing: -0.065em;
     line-height: 0.93;
     margin-bottom: 30px;
@@ -30,6 +30,10 @@ const Section = styled.section`
     margin-inline: -0.08em;
     font-weight: 400;
     color: #edc451;
+  }
+  h1 em span {
+    display: block;
+    white-space: nowrap;
   }
   ${Eyebrow} {
     color: #edc451;
@@ -102,7 +106,10 @@ export function Hero() {
         <div>
           <Eyebrow>Independent tattoo artist · Original artwork</Eyebrow>
           <h1>
-            <em>Art on skin</em>
+            <em>
+              <span>Golden Mustang</span>
+              <span>Studio</span>
+            </em>
           </h1>
           <p className="intro">{artist.introduction}</p>
           <div className="actions">

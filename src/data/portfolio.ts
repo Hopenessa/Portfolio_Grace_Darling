@@ -9,7 +9,7 @@ export const artist = {
   instagramHandle: "@gracedarlin.g",
   bookingUrl: null as string | null,
   introduction:
-    "Original artwork with a wild heart. Botanical forms, expressive linework and ornamental details, drawn into something personal.",
+    "Dark illustrative tattoos with bold contrast and intricate detail. I love creating original designs that bring your ideas into the world, making something personal for my clients!",
 };
 export type Work = {
   id: string;
