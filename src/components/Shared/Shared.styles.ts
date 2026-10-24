@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { theme } from "../styles/theme";
+import { theme } from "../../styles/theme";
 export const Container = styled.div`
   width: min(1200px, calc(100% - 96px));
   margin: auto;
@@ -57,7 +57,3 @@ export const Button = styled.a<{ $outline?: boolean }>`
     opacity: 1;
   }
 `;
-export function Ornament() {
-  return <span aria-hidden="true">✳</span>;
-}
-

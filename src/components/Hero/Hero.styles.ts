@@ -1,7 +1,8 @@
 import { styled } from "styled-components";
-import { artist } from "../data/portfolio";
-import { Button, Container, Eyebrow } from "./Shared";
-const Section = styled.section`
+import { Container } from "../Shared";
+import { Eyebrow } from "../Shared";
+
+export const Section = styled.section`
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid #40351e;
@@ -99,42 +100,3 @@ const Section = styled.section`
     }
   }
 `;
-export function Hero() {
-  return (
-    <Section id="home">
-      <Container>
-        <div>
-          <Eyebrow>Independent tattoo artist · Original artwork</Eyebrow>
-          <h1>
-            <em>
-              <span>Golden Mustang</span>
-              <span>Studio</span>
-            </em>
-          </h1>
-          <p className="intro">{artist.introduction}</p>
-          <div className="actions">
-            <Button href="#work">
-              Explore the work
-            </Button>
-            <Button $outline href="#contact">
-              Booking information
-            </Button>
-          </div>
-        </div>
-        <div className="art">
-          <div className="paper">
-            <img
-              src="images/hero-tattoo.png"
-              width="976"
-              height="1255"
-              alt="Black and grey tattoo featuring a female portrait, snakes and flowers"
-              fetchPriority="high"
-            />
-          </div>
-        </div>
-      </Container>
-    </Section>
-  );
-}
-
-
