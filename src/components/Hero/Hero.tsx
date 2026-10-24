@@ -1,8 +1,39 @@
+import { useEffect, useState } from "react";
 import { Section } from "./Hero.styles";
 import { artist } from "../../data/portfolio";
 import { Button, Container, Eyebrow } from "../Shared";
 
+const titleLines = ["Golden Mustang", "Studio"];
+const titleLength = titleLines.join("").length;
+
 export function Hero() {
+  const [visibleLetters, setVisibleLetters] = useState(titleLength);
+
+  useEffect(() => {
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (motion.matches) return;
+    setVisibleLetters(0);
+    const startedAt = Date.now();
+    const timer = window.setInterval(() => {
+      const count = Math.min(
+        titleLength,
+        Math.max(0, Math.floor((Date.now() - startedAt - 250) / 90) + 1),
+      );
+      setVisibleLetters(count);
+      if (count === titleLength) window.clearInterval(timer);
+    }, 45);
+    const finish = () => {
+      if (motion.matches) {
+        window.clearInterval(timer);
+        setVisibleLetters(titleLength);
+      }
+    };
+    motion.addEventListener("change", finish);
+    return () => {
+      window.clearInterval(timer);
+      motion.removeEventListener("change", finish);
+    };
+  }, []);
   return (
     <Section id="home">
       <Container>
@@ -10,19 +41,19 @@ export function Hero() {
           <Eyebrow>Independent tattoo artist · Original artwork</Eyebrow>
           <h1 aria-label="Golden Mustang Studio">
             <em aria-hidden="true">
-              {["Golden Mustang", "Studio"].map((line, lineIndex) => (
-                <span key={line}>
-                  {Array.from(line).map((letter, letterIndex) => (
-                    <span
-                      className="title-letter"
-                      key={letterIndex}
-                      style={{
-                        animationDelay: `${250 + ((lineIndex === 0 ? 0 : 14) + letterIndex) * 90}ms`,
-                      }}
-                    >
-                      {letter}
-                    </span>
-                  ))}
+              {titleLines.map((line, lineIndex) => (
+                <span className="title-line" key={line}>
+                  <span className="title-sizer">{line}</span>
+                  <span className="title-text">
+                    {line.slice(
+                      0,
+                      Math.max(
+                        0,
+                        visibleLetters -
+                          (lineIndex === 0 ? 0 : titleLines[0].length),
+                      ),
+                    )}
+                  </span>
                 </span>
               ))}
             </em>
