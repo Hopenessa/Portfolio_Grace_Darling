@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import { Container } from "../Shared";
 import { Eyebrow } from "../Shared";
+import { theme } from "../../styles/theme";
 
 export const Section = styled.section`
   position: relative;
@@ -31,18 +32,27 @@ export const Section = styled.section`
     margin-inline: -0.08em;
     font-weight: 400;
     color: #edc451;
+    background: none;
+    -webkit-text-fill-color: #edc451;
   }
   h1 em > span {
-    position: relative;
-    display: block;
+    display: grid;
     white-space: nowrap;
+  }
+  .title-line > span {
+    grid-area: 1 / 1;
   }
   .title-sizer {
     visibility: hidden;
   }
   .title-text {
-    position: absolute;
-    inset: 0;
+    padding: 0.08em 0.12em 0.12em;
+    margin: -0.08em -0.12em -0.12em;
+    color: #edc451;
+    background: ${theme.gradients.gold};
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   ${Eyebrow} {
     color: #edc451;
