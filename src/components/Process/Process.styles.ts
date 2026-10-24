@@ -19,6 +19,15 @@ export const Section = styled.section`
   article {
     text-align: center;
   }
+  .service-reveal {
+    min-width: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .service-reveal {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
   svg {
     display: block;
     width: 64px;

@@ -8,10 +8,23 @@ export function Hero() {
       <Container>
         <div>
           <Eyebrow>Independent tattoo artist · Original artwork</Eyebrow>
-          <h1>
-            <em>
-              <span>Golden Mustang</span>
-              <span>Studio</span>
+          <h1 aria-label="Golden Mustang Studio">
+            <em aria-hidden="true">
+              {["Golden Mustang", "Studio"].map((line, lineIndex) => (
+                <span key={line}>
+                  {Array.from(line).map((letter, letterIndex) => (
+                    <span
+                      className="title-letter"
+                      key={letterIndex}
+                      style={{
+                        animationDelay: `${250 + ((lineIndex === 0 ? 0 : 14) + letterIndex) * 90}ms`,
+                      }}
+                    >
+                      {letter}
+                    </span>
+                  ))}
+                </span>
+              ))}
             </em>
           </h1>
           <p className="intro">{artist.introduction}</p>

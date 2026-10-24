@@ -1,20 +1,112 @@
 import { Section } from "./WorkGallery.styles";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { works, type Work } from "../../data/portfolio";
 import { Container, Eyebrow, Title } from "../Shared";
 
 export function WorkGallery() {
   const dialog = useRef<HTMLDialogElement>(null);
   const [selected, setSelected] = useState<Work>(works[0]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
+  const [animating, setAnimating] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const pageCount = Math.ceil(works.length / 4);
-  const currentPage = page % Math.max(pageCount, 1);
-  const visibleWorks = works.slice(currentPage * 4, currentPage * 4 + 4);
+  const currentPage = (page - 1 + pageCount) % Math.max(pageCount, 1);
+  // Duplicate the edge pages so both arrows can cross the loop seamlessly.
+  const slides =
+    pageCount > 1
+      ? [
+          pageCount - 1,
+          ...Array.from({ length: pageCount }, (_, index) => index),
+          0,
+        ]
+      : [0];
+  const gallery = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [inView, setInView] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [tabVisible, setTabVisible] = useState(true);
+  useEffect(() => {
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotion = () => setReducedMotion(motion.matches);
+    const updateVisibility = () => setTabVisible(!document.hidden);
+    updateMotion();
+    updateVisibility();
+    motion.addEventListener("change", updateMotion);
+    document.addEventListener("visibilitychange", updateVisibility);
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.25 },
+    );
+    if (gallery.current) observer.observe(gallery.current);
+    return () => {
+      observer.disconnect();
+      motion.removeEventListener("change", updateMotion);
+      document.removeEventListener("visibilitychange", updateVisibility);
+    };
+  }, []);
+  useEffect(() => {
+    if (!animating) return;
+    const timer = window.setTimeout(
+      () => {
+        if (page === 0 || page === pageCount + 1) {
+          setResetting(true);
+          setPage(page === 0 ? pageCount : 1);
+        }
+        setAnimating(false);
+      },
+      reducedMotion ? 0 : 720,
+    );
+    return () => window.clearTimeout(timer);
+  }, [animating, page, pageCount, reducedMotion]);
+  useEffect(() => {
+    if (!resetting) return;
+    let secondFrame = 0;
+    const firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => setResetting(false));
+    });
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+    };
+  }, [resetting]);
+  useEffect(() => {
+    if (
+      pageCount < 2 ||
+      resetting ||
+      hovered ||
+      focused ||
+      dialogOpen ||
+      !inView ||
+      reducedMotion ||
+      !tabVisible
+    )
+      return;
+    const timer = window.setTimeout(() => {
+      setAnimating(true);
+      setPage((previous) => previous + 1);
+    }, 3000);
+    return () => window.clearTimeout(timer);
+  }, [
+    page,
+    pageCount,
+    resetting,
+    hovered,
+    focused,
+    dialogOpen,
+    inView,
+    reducedMotion,
+    tabVisible,
+  ]);
   function changePage(direction: number) {
-    setPage((previous) => (previous + direction + pageCount) % pageCount);
+    if (animating || resetting || pageCount < 2) return;
+    setAnimating(true);
+    setPage((previous) => previous + direction);
   }
   function show(work: Work) {
     setSelected(work);
+    setDialogOpen(true);
     dialog.current?.showModal();
   }
   return (
@@ -26,35 +118,79 @@ export function WorkGallery() {
             <Title>Drawn with intention</Title>
           </div>
         </div>
-        <div className="gallery">
-          <div className="grid" id="work-pages" aria-label="Selected artwork">
-            {visibleWorks.map((work, i) => (
-              <article className="card" key={work.id}>
-                {work.image ? (
-                  <button
-                    className="image"
-                    onClick={() => show(work)}
-                    aria-label={"View " + work.title}
-                  >
-                    <img src={work.image} alt={work.alt} loading="lazy" />
-                  </button>
-                ) : (
-                  <div className="image placeholder">
-                    <span aria-hidden="true">{["❋", "☾", "✳", "❋"][i]}</span>
-                    <small>Gallery coming soon</small>
-                  </div>
-                )}
-                <h3>{work.title}</h3>
-                <p>{work.category}</p>
-              </article>
-            ))}
+        <div
+          className="gallery"
+          ref={gallery}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onFocusCapture={() => setFocused(true)}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget))
+              setFocused(false);
+          }}
+        >
+          <div
+            className="viewport"
+            id="work-pages"
+            aria-label="Selected artwork"
+          >
+            <div
+              className="track"
+              style={{
+                transform: `translateX(-${(pageCount > 1 ? page : 0) * 100}%)`,
+              }}
+              data-resetting={resetting}
+            >
+              {slides.map((pageIndex, slideIndex) => (
+                <div
+                  className="grid"
+                  key={slideIndex}
+                  ref={(element) => {
+                    element?.toggleAttribute(
+                      "inert",
+                      slideIndex !== (pageCount > 1 ? page : 0),
+                    );
+                  }}
+                  aria-hidden={slideIndex !== (pageCount > 1 ? page : 0)}
+                >
+                  {works
+                    .slice(pageIndex * 4, pageIndex * 4 + 4)
+                    .map((work, i) => (
+                      <article className="card" key={work.id}>
+                        {work.image ? (
+                          <button
+                            className="image"
+                            onClick={() => show(work)}
+                            aria-label={"View " + work.title}
+                          >
+                            <img
+                              src={work.image}
+                              alt={work.alt}
+                              loading="lazy"
+                            />
+                          </button>
+                        ) : (
+                          <div className="image placeholder">
+                            <span aria-hidden="true">
+                              {["❋", "☾", "✳", "❋"][i]}
+                            </span>
+                            <small>Gallery coming soon</small>
+                          </div>
+                        )}
+                        <h3>{work.title}</h3>
+                        <p>{work.category}</p>
+                      </article>
+                    ))}
+                </div>
+              ))}
+            </div>
           </div>
           {pageCount > 1 && (
             <div className="controls" aria-label="Gallery navigation">
               <span
                 className="page-status"
                 role="status"
-                aria-live="polite"
+                aria-live={focused ? "polite" : "off"}
                 aria-atomic="true"
               >
                 {currentPage + 1} / {pageCount}
@@ -99,6 +235,7 @@ export function WorkGallery() {
           )}
         </div>
         <dialog
+          onClose={() => setDialogOpen(false)}
           ref={dialog}
           aria-label={selected.title}
           onClick={(event) => {

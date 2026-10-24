@@ -93,10 +93,27 @@ export const Section = styled.section`
     clip-path: inset(50%);
   }
   .grid {
+    flex: 0 0 100%;
+    min-width: 0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 22px;
     margin-top: 0;
+  }
+  .viewport {
+    overflow: hidden;
+  }
+  .track {
+    display: flex;
+    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .track[data-resetting="true"] {
+    transition: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .track {
+      transition: none;
+    }
   }
   .card {
     position: relative;

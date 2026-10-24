@@ -1,6 +1,7 @@
 import { Section } from "./Process.styles";
 import { services } from "../../data/portfolio";
 import { Container } from "../Shared";
+import { Fade } from "react-awesome-reveal";
 
 function ServiceIcon({ kind }: { kind: (typeof services)[number]["icon"] }) {
   return (
@@ -53,13 +54,22 @@ export function Process() {
       <Container>
         <h2 id="services-title">03 / Services</h2>
         <div className="services">
-          {services.map((service) => (
-            <article key={service.icon}>
-              <ServiceIcon kind={service.icon} />
-              <h3>{service.title}</h3>
-              <p>{service.text}</p>
-            </article>
-          ))}
+          <Fade
+            cascade
+            duration={900}
+            damping={0.35}
+            triggerOnce
+            fraction={0.15}
+            className="service-reveal"
+          >
+            {services.map((service) => (
+              <article key={service.icon}>
+                <ServiceIcon kind={service.icon} />
+                <h3>{service.title}</h3>
+                <p>{service.text}</p>
+              </article>
+            ))}
+          </Fade>
         </div>
       </Container>
     </Section>

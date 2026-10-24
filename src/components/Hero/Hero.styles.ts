@@ -1,6 +1,11 @@
-import { styled } from "styled-components";
+import { keyframes, styled } from "styled-components";
 import { Container } from "../Shared";
 import { Eyebrow } from "../Shared";
+
+const revealLetter = keyframes`
+  from { visibility: hidden; }
+  to { visibility: visible; }
+`;
 
 export const Section = styled.section`
   position: relative;
@@ -32,9 +37,12 @@ export const Section = styled.section`
     font-weight: 400;
     color: #edc451;
   }
-  h1 em span {
+  h1 em > span {
     display: block;
     white-space: nowrap;
+  }
+  .title-letter {
+    animation: ${revealLetter} 1ms step-end both;
   }
   ${Eyebrow} {
     color: #edc451;
