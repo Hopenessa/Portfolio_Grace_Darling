@@ -21,6 +21,7 @@ export function WorkGallery() {
         ]
       : [0];
   const gallery = useRef<HTMLDivElement>(null);
+  const nextAdvanceAt = useRef<number | null>(null);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -74,19 +75,25 @@ export function WorkGallery() {
   useEffect(() => {
     if (
       pageCount < 2 ||
-      resetting ||
       hovered ||
       focused ||
       dialogOpen ||
       !inView ||
       reducedMotion ||
       !tabVisible
-    )
+    ) {
+      nextAdvanceAt.current = null;
       return;
+    }
+    // Keep the deadline across the invisible loop reset.
+    if (resetting) return;
+    const now = performance.now();
+    nextAdvanceAt.current ??= now + 3300;
     const timer = window.setTimeout(() => {
+      nextAdvanceAt.current = performance.now() + 4000;
       setAnimating(true);
       setPage((previous) => previous + 1);
-    }, 3000);
+    }, Math.max(0, nextAdvanceAt.current - now));
     return () => window.clearTimeout(timer);
   }, [
     page,
@@ -101,6 +108,7 @@ export function WorkGallery() {
   ]);
   function changePage(direction: number) {
     if (animating || resetting || pageCount < 2) return;
+    nextAdvanceAt.current = performance.now() + 4000;
     setAnimating(true);
     setPage((previous) => previous + direction);
   }
