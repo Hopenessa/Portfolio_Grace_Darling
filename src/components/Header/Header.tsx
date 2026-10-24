@@ -6,6 +6,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
   const header = useRef<HTMLElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     const sections = [
       ...document.querySelectorAll<HTMLElement>("main > section[id]"),
@@ -40,7 +41,15 @@ export function Header() {
     };
   }, []);
   return (
-    <Bar ref={header}>
+    <Bar
+      ref={header}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && open) {
+          setOpen(false);
+          menuButton.current?.focus();
+        }
+      }}
+    >
       <Container>
         <a
           className="brand"
@@ -55,6 +64,7 @@ export function Header() {
           />
         </a>
         <button
+          ref={menuButton}
           type="button"
           aria-expanded={open}
           aria-controls="navigation"

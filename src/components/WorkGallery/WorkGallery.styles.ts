@@ -164,6 +164,10 @@ export const Section = styled.section`
     object-fit: cover;
     object-position: center;
   }
+  .image:focus-visible {
+    outline: 3px solid #fff0b3;
+    outline-offset: -5px;
+  }
   .placeholder {
     background: radial-gradient(
       ellipse at 50% 60%,
