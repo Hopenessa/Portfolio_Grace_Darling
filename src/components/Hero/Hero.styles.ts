@@ -91,22 +91,6 @@ export const Section = styled.section`
     width: 100%;
     height: auto;
   }
-  .caption {
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 0 0;
-    color: #ffffff;
-    font-size: 12px;
-    letter-spacing: 0.17em;
-    text-transform: uppercase;
-  }
-  .location {
-    margin-top: 32px;
-    color: #ffffff;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
   @media (max-width: 900px) {
     ${Container} {
       grid-template-columns: 1fr;

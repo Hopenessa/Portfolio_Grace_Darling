@@ -40,19 +40,6 @@ export const Section = styled.section`
     height: auto;
   }
 
-  .portrait span {
-    font-size: 100px;
-    color: #edc451;
-  }
-
-  .portrait p {
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #ffffff;
-    margin-top: 25px;
-  }
-
   .copy {
     color: #ffffff;
     font-size: 16px;

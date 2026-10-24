@@ -2,21 +2,20 @@ export const artist = {
   studio: "Golden Mustang Studio",
   location: { city: "Clarklake", state: "Michigan", country: "USA" },
   name: "Grace Darling",
-  phone: "(517) 539-4234" as string | null,
+  phone: "(517) 539-4234",
   phoneHref: "+15175394234",
-  email: "goldenmustangstudio@gmail.com" as string | null,
-  instagram: "https://www.instagram.com/gracedarlin.g/" as string | null,
+  email: "goldenmustangstudio@gmail.com",
+  instagram: "https://www.instagram.com/gracedarlin.g/",
   instagramHandle: "@gracedarlin.g",
-  bookingUrl: null as string | null,
   introduction:
     "Dark illustrative tattoos with bold contrast and intricate detail. I love creating original designs that bring your ideas into the world, making something personal for my clients!",
 };
 export type Work = {
   id: string;
   title: string;
-  category: "Black & grey" | "Color" | "Portfolio preview";
-  image?: string;
-  alt?: string;
+  category: "Black & grey" | "Color";
+  image: string;
+  alt: string;
   note: string;
 };
 export const works: Work[] = [
@@ -52,9 +51,6 @@ export const works: Work[] = [
     alt: "Colorful tattoo of a burning house framed by flowers and handwritten lettering",
     note: "House in Flames — color tattoo",
   },
-];
-// Temporary gallery slots: replace these with Grace's photographs when supplied.
-works.push(
   {
     id: "spider-web",
     title: "Spider & Web",
@@ -119,7 +115,8 @@ works.push(
     alt: "Black and grey surreal house tattoo with a female face and root-like legs",
     note: "Haunted House — black and grey tattoo",
   },
-);
+];
+
 export const services = [
   {
     icon: "star",

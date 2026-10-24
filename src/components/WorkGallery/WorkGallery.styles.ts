@@ -168,24 +168,6 @@ export const Section = styled.section`
     outline: 3px solid #fff0b3;
     outline-offset: -5px;
   }
-  .placeholder {
-    background: radial-gradient(
-      ellipse at 50% 60%,
-      #3c3b2c 0%,
-      #20221b 55%,
-      #181a15 90%
-    );
-    flex-direction: column;
-    gap: 24px;
-  }
-  .placeholder span {
-    color: #827453;
-    font-family: Georgia, serif;
-    font-size: 80px;
-  }
-  .placeholder small {
-    display: none;
-  }
   .card h3 {
     font-family: Georgia, serif;
     font-size: 22px;

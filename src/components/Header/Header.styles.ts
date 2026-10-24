@@ -28,10 +28,6 @@ export const Bar = styled.header`
     height: 84px;
     object-fit: contain;
   }
-  .brand span {
-    color: #edc451;
-    margin-right: 12px;
-  }
   nav {
     display: flex;
     gap: 24px;

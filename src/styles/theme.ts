@@ -13,4 +13,3 @@ export const theme = {
   maxWidth: "1200px",
   media: { tablet: "(max-width: 900px)", mobile: "(max-width: 600px)" },
 };
-

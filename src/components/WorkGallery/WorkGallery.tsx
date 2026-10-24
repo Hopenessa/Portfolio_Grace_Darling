@@ -11,7 +11,7 @@ export function WorkGallery() {
   const [resetting, setResetting] = useState(false);
   const pageCount = Math.ceil(works.length / 4);
   const currentPage = (page - 1 + pageCount) % Math.max(pageCount, 1);
-  // Duplicate the edge pages so both arrows can cross the loop seamlessly.
+
   const slides =
     pageCount > 1
       ? [
@@ -85,15 +85,18 @@ export function WorkGallery() {
       nextAdvanceAt.current = null;
       return;
     }
-    // Keep the deadline across the invisible loop reset.
+
     if (resetting) return;
     const now = performance.now();
     nextAdvanceAt.current ??= now + 3300;
-    const timer = window.setTimeout(() => {
-      nextAdvanceAt.current = performance.now() + 4000;
-      setAnimating(true);
-      setPage((previous) => previous + 1);
-    }, Math.max(0, nextAdvanceAt.current - now));
+    const timer = window.setTimeout(
+      () => {
+        nextAdvanceAt.current = performance.now() + 4000;
+        setAnimating(true);
+        setPage((previous) => previous + 1);
+      },
+      Math.max(0, nextAdvanceAt.current - now),
+    );
     return () => window.clearTimeout(timer);
   }, [
     page,
@@ -161,34 +164,19 @@ export function WorkGallery() {
                   }}
                   aria-hidden={slideIndex !== (pageCount > 1 ? page : 0)}
                 >
-                  {works
-                    .slice(pageIndex * 4, pageIndex * 4 + 4)
-                    .map((work, i) => (
-                      <article className="card" key={work.id}>
-                        {work.image ? (
-                          <button
-                            className="image"
-                            onClick={() => show(work)}
-                            aria-label={"View " + work.title}
-                          >
-                            <img
-                              src={work.image}
-                              alt={work.alt}
-                              loading="lazy"
-                            />
-                          </button>
-                        ) : (
-                          <div className="image placeholder">
-                            <span aria-hidden="true">
-                              {["❋", "☾", "✳", "❋"][i]}
-                            </span>
-                            <small>Gallery coming soon</small>
-                          </div>
-                        )}
-                        <h3>{work.title}</h3>
-                        <p>{work.category}</p>
-                      </article>
-                    ))}
+                  {works.slice(pageIndex * 4, pageIndex * 4 + 4).map((work) => (
+                    <article className="card" key={work.id}>
+                      <button
+                        className="image"
+                        onClick={() => show(work)}
+                        aria-label={"View " + work.title}
+                      >
+                        <img src={work.image} alt={work.alt} loading="lazy" />
+                      </button>
+                      <h3>{work.title}</h3>
+                      <p>{work.category}</p>
+                    </article>
+                  ))}
                 </div>
               ))}
             </div>

@@ -48,16 +48,6 @@ export const Section = styled.section`
     flex-shrink: 0;
   }
 
-  .status {
-    display: inline-block;
-    color: #ffffff;
-    border: 1px solid #61573e;
-    padding: 10px 14px;
-    font-size: 12px;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-  }
-
   .description {
     color: #ffffff;
     font-size: 16px;

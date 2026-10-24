@@ -1,6 +1,6 @@
 import { Section } from "./Contact.styles";
 import { artist } from "../../data/portfolio";
-import { Button, Container, Eyebrow, Title } from "../Shared";
+import { Container, Eyebrow, Title } from "../Shared";
 import { ContactIcon } from "../ContactIcon";
 
 export function Contact() {
@@ -23,43 +23,24 @@ export function Contact() {
         </div>
         <div className="details">
           <p className="contact-row">
-            {artist.instagram ? (
-              <a
-                href={artist.instagram}
-                aria-label="Grace Darling on Instagram"
-              >
-                <ContactIcon kind="instagram" />
-                <span>{artist.instagramHandle}</span>
-              </a>
-            ) : (
-              <>
-                <ContactIcon kind="instagram" />
-                <span aria-label="Instagram — coming soon">Coming soon</span>
-              </>
-            )}
+            <a href={artist.instagram} aria-label="Grace Darling on Instagram">
+              <ContactIcon kind="instagram" />
+              <span>{artist.instagramHandle}</span>
+            </a>
           </p>
           <p className="contact-row">
             <ContactIcon kind="phone" />
-            {artist.phone ? (
-              <a href={"tel:" + artist.phoneHref}>{artist.phone}</a>
-            ) : (
-              <span aria-label="Phone — coming soon">Coming soon</span>
-            )}
+            <a href={"tel:" + artist.phoneHref}>{artist.phone}</a>
           </p>
           <p className="contact-row">
             <ContactIcon kind="email" />
-            {artist.email ? (
-              <a href={"mailto:" + artist.email}>{artist.email}</a>
-            ) : (
-              <span aria-label="Email — coming soon">Coming soon</span>
-            )}
+            <a href={"mailto:" + artist.email}>{artist.email}</a>
           </p>
           <p className="contact-row">
             <ContactIcon kind="location" />
             <span>
-              {artist.studio}, {artist.location.city || "City"},{" "}
-              {artist.location.state || "State"},{" "}
-              {artist.location.country || "Country"}
+              {artist.studio}, {artist.location.city}, {artist.location.state},{" "}
+              {artist.location.country}
             </span>
           </p>
         </div>
