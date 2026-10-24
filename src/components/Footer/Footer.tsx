@@ -6,19 +6,18 @@ export function Footer() {
   return (
     <Bar>
       <Container>
-        <div>
-          <p className="name">{artist.studio}</p>
+        <p className="name">{artist.studio}</p>
+        <div className="artist-details">
           <p>Grace Darling · Tattoo artist</p>
           <p>
             {artist.location.city}, {artist.location.state},{" "}
             {artist.location.country}
           </p>
         </div>
-        <p>
+        <p className="copyright">
           © {new Date().getFullYear()} Grace Darling. Original artwork belongs
           to the artist.
         </p>
-        <a href="#home">BACK TO TOP ↑</a>
       </Container>
     </Bar>
   );

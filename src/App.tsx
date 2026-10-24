@@ -8,6 +8,7 @@ import { About } from "./components/About";
 import { Process } from "./components/Process";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
+import { GoTopButton } from "./components/GoTopButton";
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -24,6 +25,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <GoTopButton />
     </ThemeProvider>
   );
 }
