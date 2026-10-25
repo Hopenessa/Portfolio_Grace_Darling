@@ -26,6 +26,48 @@ export const Section = styled.section`
   dialog .close-artwork:hover {
     color: #fff;
   }
+  .artwork-viewer {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    align-items: center;
+    gap: 16px;
+  }
+  .artwork-viewer img {
+    width: 100%;
+    height: 65vh;
+    object-fit: contain;
+  }
+  dialog .artwork-arrow {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    float: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #edc451;
+    border-radius: 50%;
+    background: #060606;
+    color: #edc451;
+  }
+  dialog .artwork-arrow:hover {
+    background: #302510;
+  }
+  .artwork-arrow svg {
+    width: 24px;
+    height: 24px;
+  }
+  .artwork-caption {
+    text-align: center;
+  }
+  @media (max-width: 600px) {
+    dialog {
+      padding-inline: 8px;
+    }
+    .artwork-viewer {
+      gap: 6px;
+    }
+  }
   padding: 100px 0;
   .heading {
     display: flex;

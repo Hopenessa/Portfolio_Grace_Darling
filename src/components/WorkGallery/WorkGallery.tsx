@@ -120,6 +120,12 @@ export function WorkGallery() {
     setDialogOpen(true);
     dialog.current?.showModal();
   }
+  function changeArtwork(direction: number) {
+    setSelected((previous) => {
+      const index = works.findIndex((work) => work.id === previous.id);
+      return works[(index + direction + works.length) % works.length];
+    });
+  }
   return (
     <Section id="work">
       <Container>
@@ -234,9 +240,17 @@ export function WorkGallery() {
           onClose={() => setDialogOpen(false)}
           ref={dialog}
           aria-label={selected.title}
+          onKeyDown={(event) => {
+            if (event.altKey || event.ctrlKey || event.metaKey) return;
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+              event.preventDefault();
+              changeArtwork(event.key === "ArrowLeft" ? -1 : 1);
+            }
+          }}
           onClick={(event) => {
             const target = event.target as HTMLElement;
-            if (target.closest("img, button")) return;
+            if (target.closest(".artwork-viewer, .artwork-caption, button"))
+              return;
             dialog.current?.close();
           }}
         >
@@ -257,8 +271,51 @@ export function WorkGallery() {
               <path d="m6 6 12 12M18 6 6 18" />
             </svg>
           </button>
-          <img src={selected.image} alt={selected.alt} />
-          <p>{selected.note}</p>
+          <div className="artwork-viewer">
+            <button
+              type="button"
+              className="artwork-arrow"
+              aria-label="Previous artwork"
+              aria-controls="artwork-image"
+              onClick={() => changeArtwork(-1)}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                aria-hidden="true"
+              >
+                <path d="m14 6-6 6 6 6" />
+              </svg>
+            </button>
+            <img id="artwork-image" src={selected.image} alt={selected.alt} />
+            <button
+              type="button"
+              className="artwork-arrow"
+              aria-label="Next artwork"
+              aria-controls="artwork-image"
+              onClick={() => changeArtwork(1)}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                aria-hidden="true"
+              >
+                <path d="m10 6 6 6-6 6" />
+              </svg>
+            </button>
+          </div>
+          <p
+            className="artwork-caption"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {selected.note}
+          </p>
         </dialog>
       </Container>
     </Section>
