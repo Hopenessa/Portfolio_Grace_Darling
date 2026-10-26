@@ -2,6 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      const navigation = performance.getEntriesByType("navigation")[0];
+      if (navigation?.type === "reload") {
+        history.scrollRestoration = "manual";
+        history.replaceState(
+          history.state,
+          "",
+          location.pathname + location.search,
+        );
+        const resetScroll = () => {
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        };
+        resetScroll();
+        window.addEventListener(
+          "pageshow",
+          () => {
+            resetScroll();
+            history.scrollRestoration = "auto";
+          },
+          { once: true },
+        );
+      }
+    </script>
     <link rel="icon" href="%BASE_URL%favicon.ico" sizes="any" />
     <link
       rel="icon"
