@@ -9,7 +9,9 @@ import { Process } from "./components/Process";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { GoTopButton } from "./components/GoTopButton";
+import { useSectionNavigation } from "./hooks/useSectionNavigation";
 export default function App() {
+  useSectionNavigation();
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
